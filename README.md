@@ -12,7 +12,7 @@
 ### Backend
 
  * Flask
- * Flask-Restful (for API and it documentation)
+ * Flask-RESTPlus (for API and it documentation)
  * Flask-SqlAlchemy (with migrations using alembic)
  * Production Deployment uses gunicorn
 
