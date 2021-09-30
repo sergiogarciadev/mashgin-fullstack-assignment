@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: api
+      dockerfile: Dockerfile
+    environment:
+      - APP_SETTINGS=shopping_api.config.ProductionConfig
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    networks:
+      - db
+      - api
+    ports:
+     - "80"
+
+  web:
+    build:
+      context: web
+      dockerfile: Dockerfile
+    networks:
+      - api
+      - web
+    volumes:
+      - ./web/public/images:/usr/share/nginx/html/images
+    ports:
+      - "80:80"
+
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - db
+    ports:
+      - "5432:5432"
+
+
+networks:
+  db:
+  api:
+  web:
+
+volumes:
+  postgres-data:
